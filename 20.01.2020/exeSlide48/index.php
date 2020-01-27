@@ -1,6 +1,6 @@
 <?php
-require("Adress.php");
-require("AdressManager.php");
+require("Address.php");
+require("AddressManager.php");
 
 $servername = "127.0.0.1";
 $username = "root";
@@ -14,8 +14,10 @@ catch(PDOException $e)
     echo $connection . "<br>" . $e->getMessage();
 }
 
-$adressManager = new adressManager($connection);
-/*$adress = new Adress();
+$adressManager = new addressManager($connection);
+
+//New address
+/*$adress = new Address();
 
 $adress->setStreet("Rue Hopkins");
 $adress->setNumber(12);
@@ -24,14 +26,17 @@ $adress->setZip(1000);
 
 $adressManager->create($adress);
 */
-$readAdress = $adressManager->readAll();
+
+//Read address
+/*$readAdress = $adressManager->readAll();
 if(!empty($readAdress)){
     $adress = new Adress();
     foreach ($readAdress as $adress){
-        echo $adress->getId();
-        //echo $adress->getId() . "\n";
+        echo $adress->getId()." ".$adress->getStreet()." ".$adress->getNumber()." ".$adress->getZip()." ".$adress->getCity()."\n";
+
     }
 }
+*/
 
 
 

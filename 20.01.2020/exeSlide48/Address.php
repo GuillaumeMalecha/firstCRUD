@@ -1,6 +1,6 @@
 <?php
 
-class Adress
+class Address
 {
 
     private $street;

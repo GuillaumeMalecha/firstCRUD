@@ -1,5 +1,5 @@
 <?php
-class AdressManager{
+class AddressManager{
     private $connection = null;
 
     public function __construct($connection)
@@ -7,7 +7,7 @@ class AdressManager{
         $this->connection = $connection;
     }
 
-    public function getConnection()
+    public function getConnection(): PDO
     {
         return $this->connection;
     }
@@ -20,7 +20,7 @@ class AdressManager{
 
 
     //Create
-    public function create(Adress $adress)
+    public function create(Address $address)
     {
         $stmt = $this->getConnection()->prepare(
             'INSERT INTO adresses
@@ -29,10 +29,10 @@ class AdressManager{
            :street,:zip,:number,:city
        )'
         );
-        $stmt->bindValue(":street", $adress->getStreet());
-        $stmt->bindValue(":zip", $adress->getZip(), PDO::PARAM_INT);
-        $stmt->bindValue(":number", $adress->getNumber(), PDO::PARAM_INT);
-        $stmt->bindValue(":city", $adress->getCity());
+        $stmt->bindValue(":street", $address->getStreet());
+        $stmt->bindValue(":zip", $address->getZip(), PDO::PARAM_INT);
+        $stmt->bindValue(":number", $address->getNumber(), PDO::PARAM_INT);
+        $stmt->bindValue(":city", $address->getCity());
 
         $stmt->execute();
     }
@@ -45,17 +45,17 @@ class AdressManager{
         $query = $this->getConnection()->query(
             'SELECT id, street, number, city, zip' .
             'FROM Adress WHERE id = ' . $id);
-        $query->setFetchMode(PDO :: FETCH_CLASS, Adress);
+        $query->setFetchMode(PDO :: FETCH_CLASS, 'address');
         return $query->fetch();
     }
 
     //Read all
     public function readAll() {
-        $adress = array();
+        $address = array();
         $query = $this->getConnection()->query(
             'SELECT id, street, number, city, zip
             FROM adresses ');
-        $query->setFetchMode(PDO :: FETCH_CLASS, 'adresses');
+        $query->setFetchMode(PDO::FETCH_CLASS, 'address');
         while ($data = $query->fetch()) {
             $adress[] = $data;
         }
@@ -64,7 +64,7 @@ class AdressManager{
     }
 
     //Update
-    public function update(Adress $adress) {
+    public function update(Address $address) {
         $query = $this->getConnection()->prepare(
             'UPDATE adresses SET ' .
             'street=:street,' .
@@ -74,19 +74,19 @@ class AdressManager{
             'WHERE id=:id'
         );
 
-        $query->bindValue(':street', $adress->getStreet(), PDO::PARAM_INT);
-        $query->bindValue(':number', $adress->getNumber());
-        $query->bindValue(':city', $adress->getCity(), PDO::PARAM_INT);
-        $query->bindValue(':zip', $adress->getZip());
+        $query->bindValue(':street', $address->getStreet(), PDO::PARAM_INT);
+        $query->bindValue(':number', $address->getNumber());
+        $query->bindValue(':city', $address->getCity(), PDO::PARAM_INT);
+        $query->bindValue(':zip', $address->getZip());
 
         $query->execute();
     }
 
     //Delete
-    public function delete(Adress $adress) {
+    public function delete(Address $address) {
         $this->getConnection()->exec(
             'DELETE FROM adresses ' .
-            'WHERE id = ' . $adress->getId()
+            'WHERE id = ' . $address->getId()
         );
     }
 
